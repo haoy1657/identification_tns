@@ -1,0 +1,41 @@
+clear all
+close all
+load("donne_y.mat");
+q1=y(:,1);
+q2=y(:,2);
+p1=y(:,3);
+p2=y(:,4);
+q1_dot=y(:,5);
+q2_dot=y(:,6);
+p1_dot=y(:,7);
+p2_dot=y(:,8);
+sampling_period=1e-4;
+Fs=1/sampling_period;
+
+fft_q1=fft(q1);
+fft_q2=fft(q2);
+fft_p1=fft(p1);
+fft_p2=fft(p2);
+
+
+
+
+% 2. 计算FFT
+N = length(q1);  % 数据点数
+X = fft(q1);
+fft_shifted = fftshift(X);
+% 3. 计算频率轴
+% f = (0:N-1)*(Fs/N);  % 创建频率轴，单位为Hz，从0到Fs
+f = (-N/2:N/2-1)*(Fs/N);
+f_range = (f >= -1000 & f <= 1000);
+fft_cropped = fft_shifted(f_range);
+f_cropped = f(f_range);
+
+
+
+% 5. 绘制频谱图
+figure;
+plot(f_cropped ,abs(fft_cropped));  % 绘制频谱，取FFT结果的绝对值
+xlabel('f (Hz)');
+
+
